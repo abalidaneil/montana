@@ -4,25 +4,28 @@ $host = "localhost"; $user = "root"; $pass = ""; $dbname = "montana";
 $conn = new mysqli($host, $user, $pass, $dbname);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = $_POST['password'];
+    $user_input = $_POST['username'];
+    $pass_input = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, password FROM admins WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $conn->prepare("SELECT * FROM admins WHERE username = ?");
+    $stmt->bind_param("s", $user_input);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows === 1) {
         $admin = $result->fetch_assoc();
-        // Check if password matches the hash
-        if (password_verify($password, $admin['password'])) {
+        
+        // TEMPORARY BYPASS: Simple string comparison
+        if ($pass_input === $admin['password']) {
             $_SESSION['admin_id'] = $admin['id'];
-            $_SESSION['admin_user'] = $username;
+            $_SESSION['admin_user'] = $admin['username'];
             header("Location: ../admin_dashboard.php");
             exit();
+        } else {
+            die("Debug: Password mismatch. You typed: [$pass_input], DB has: [" . $admin['password'] . "]");
         }
+    } else {
+        die("Debug: Username not found.");
     }
-    // Redirect back if failed
-    header("Location: ../admin_login.html?error=failed");
 }
 ?>

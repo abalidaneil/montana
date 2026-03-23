@@ -1,17 +1,16 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_id'])) exit();
+if (!isset($_SESSION['admin_id'])) { exit("Unauthorized"); }
 
 $conn = new mysqli("localhost", "root", "", "montana");
+$id = $_GET['id'];
 
-$type = $_GET['type'];
-$id = (int)$_GET['id'];
-
-if ($type == 'user') {
-    $conn->query("DELETE FROM users WHERE id = $id");
-} elseif ($type == 'loan') {
-    $conn->query("DELETE FROM loans WHERE id = $id");
+if (isset($id)) {
+    // This will also delete their loans/withdrawals if you set up "CASCADE" in the DB
+    $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
 }
 
-header("Location: ../admin_dashboard.php");
+header("Location: ../admin_dashboard.php?msg=deleted");
 ?>
