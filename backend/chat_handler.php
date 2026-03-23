@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 $host = "localhost"; $user = "root"; $pass = ""; $dbname = "montana";
 $conn = new mysqli($host, $user, $pass, $dbname);
@@ -19,17 +20,40 @@ if ($action == 'send') {
     }
 }
 
-// ACTION: FETCH MESSAGES
 if ($action == 'fetch') {
     $user_id = $_GET['user_id'];
     $result = $conn->query("SELECT * FROM messages WHERE user_id = '$user_id' ORDER BY created_at ASC");
     
     while ($row = $result->fetch_assoc()) {
-        $class = ($row['sender'] == 'admin') ? 'msg-admin' : 'msg-user';
-        echo "<div class='message $class'>
-                <p>{$row['message_text']}</p>
-                <small>" . date('H:i', strtotime($row['created_at'])) . "</small>
-              </div>";
+        // Determine the class and name based on the sender
+        if ($row['sender'] == 'admin') {
+            $class = "msg-admin";
+            $displayName = "Support Agent";
+        } else {
+            $class = "msg-user";
+            $displayName = "You";
+        }
+
+        echo "
+        <div class='msg $class'>
+            <span class='sender-name'>$displayName</span>
+            <p style='margin:0;'>{$row['message_text']}</p>
+            <span class='time'>" . date('h:i A', strtotime($row['created_at'])) . "</span>
+        </div>";
     }
 }
+
+// // ACTION: FETCH MESSAGES
+// if ($action == 'fetch') {
+//     $user_id = $_GET['user_id'];
+//     $result = $conn->query("SELECT * FROM messages WHERE user_id = '$user_id' ORDER BY created_at ASC");
+    
+//     while ($row = $result->fetch_assoc()) {
+//         $class = ($row['sender'] == 'admin') ? 'msg-admin' : 'msg-user';
+//         echo "<div class='message $class'>
+//                 <p>{$row['message_text']}</p>
+//                 <small>" . date('H:i', strtotime($row['created_at'])) . "</small>
+//               </div>";
+//     }
+// }
 ?>

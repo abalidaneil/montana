@@ -54,7 +54,7 @@ $user_count = $users->num_rows;
         <h2>F.W.C Admin</h2>
         <a href="#users" class="nav-link active"><i class="fa fa-users"></i> Users</a>
         <a href="#loans" class="nav-link"><i class="fa fa-hand-holding-dollar"></i> Loans</a>
-        <a href="#withdraws" class="nav-link"><i class="fa fa-money-bill-transfer"></i> Withdrawals</a>
+        <a href="admin_inbox.php" class="nav-link"><i class="fa fa-money-bill-transfer"></i> Chats</a>
         <a href="backend/logout.php" class="nav-link" style="margin-top:50px;"><i class="fa fa-sign-out"></i> Logout</a>
     </div>
 

@@ -9,27 +9,59 @@ if (!isset($_SESSION['user_id'])) { header("Location: login.html"); exit(); }
     <title>Support Chat | Firstworldchoice</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --sidebar-w: 240px; --teal: #0d3a35; --bg-gray: #f8fafb; }
-        body { display: flex; background: var(--bg-gray); margin: 0; font-family: 'Inter', sans-serif; height: 100vh; }
-        
-        /* Sidebar stays fixed */
-        aside { width: var(--sidebar-w); background: #fff; height: 100vh; border-right: 1px solid #eee; position: fixed; padding: 20px; }
-        
-        main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; height: 100vh; }
-        
-        /* Chat Interface */
-        .chat-header { background: #fff; padding: 20px; border-bottom: 1px solid #eee; font-weight: bold; color: var(--teal); }
-        #chat-history { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        
-        /* Message Bubbles */
-        .msg { max-width: 60%; padding: 12px 18px; border-radius: 15px; font-size: 0.95rem; line-height: 1.4; position: relative; }
-        .msg-user { align-self: flex-end; background: var(--teal); color: white; border-bottom-right-radius: 2px; }
-        .msg-admin { align-self: flex-start; background: #e9ecef; color: #333; border-bottom-left-radius: 2px; }
-        .time { font-size: 0.7rem; display: block; margin-top: 5px; opacity: 0.7; }
+                /* Container for the whole history */
+        #chat-history {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
 
-        .chat-input-area { background: #fff; padding: 20px; border-top: 1px solid #eee; display: flex; gap: 15px; }
-        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-        button { background: var(--teal); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; }
+        /* Base Message Style */
+        .msg {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* User Messages (Sent by Customer) - Right Aligned */
+        .msg-user {
+            align-self: flex-end;
+            background-color: #0d3b36; /* Your primary dark green */
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        /* Admin Messages (Sent by Support) - Left Aligned */
+        .msg-admin {
+            align-self: flex-start;
+            background-color: #e9ecef; /* Light gray */
+            color: #333;
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Names and Timestamps */
+        .sender-name {
+            display: block;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .msg-user .sender-name { color: #d1f366; text-align: right; } /* Neon accent for user name */
+        .msg-admin .sender-name { color: #0d3b36; text-align: left; }
+
+        .time {
+            display: block;
+            font-size: 0.65rem;
+            margin-top: 5px;
+            opacity: 0.6;
+        }
+        .msg-user .time { text-align: right; }
     </style>
 </head>
 <body>

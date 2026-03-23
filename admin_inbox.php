@@ -18,6 +18,59 @@ $users = $conn->query("SELECT DISTINCT u.id, u.fname, u.lname FROM users u JOIN 
         .chat-area { flex: 1; display: flex; flex-direction: column; }
         #admin-chat-window { flex: 1; padding: 20px; overflow-y: auto; background: #fff; margin: 20px; border-radius: 12px; }
         .reply-box { padding: 20px; background: #fff; display: flex; gap: 10px; }
+
+        #chat-history {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Base Message Style */
+        .msg {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* User Messages (Sent by Customer) - Right Aligned */
+        .msg-user {
+            align-self: flex-end;
+            background-color: #0d3b36; /* Your primary dark green */
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        /* Admin Messages (Sent by Support) - Left Aligned */
+        .msg-admin {
+            align-self: flex-start;
+            background-color: #e9ecef; /* Light gray */
+            color: #333;
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Names and Timestamps */
+        .sender-name {
+            display: block;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .msg-user .sender-name { color: #d1f366; text-align: right; } /* Neon accent for user name */
+        .msg-admin .sender-name { color: #0d3b36; text-align: left; }
+
+        .time {
+            display: block;
+            font-size: 0.65rem;
+            margin-top: 5px;
+            opacity: 0.6;
+        }
+        .msg-user .time { text-align: right; }
     </style>
 </head>
 <body>

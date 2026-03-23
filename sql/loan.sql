@@ -27,14 +27,7 @@ CREATE TABLE withdrawals (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE messages (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    sender ENUM('user', 'admin') NOT NULL,
-    message_text TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+
 
 -- 2. Create the table with the correct columns
 CREATE TABLE admins (
@@ -46,5 +39,13 @@ CREATE TABLE admins (
 -- 3. Insert the admin with a PHP-compatible HASHED password
 -- The password here is 'admin123'
 INSERT INTO admins (username, password) 
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+VALUES ('admin', 'admin123');
 
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    sender ENUM('user', 'admin') NOT NULL,
+    message_text TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
