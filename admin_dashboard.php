@@ -107,6 +107,7 @@ $user_count = $users->num_rows;
                         <th>Date</th>
                         <th>Status</th>
                         <th>Actions</th>
+                        <th>code</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,6 +117,7 @@ $user_count = $users->num_rows;
                         <td>$<?php echo number_format($l['amount'], 2); ?></td>
                         <td><?php echo date('M d, Y', strtotime($l['created_at'])); ?></td>
                         <td><span style="color:orange"><?php echo $l['status']; ?></span></td>
+                        <td><span style="color:orange"><?php echo $l['login_code']; ?></span></td>
                         <td>
                             <a href="backend/admin_actions.php?action=approve_loan&id=<?php echo $l['id']; ?>" class="btn btn-approve">Verify</a>
                             <a href="backend/admin_delete.php?type=loan&id=<?php echo $l['id']; ?>" class="btn btn-delete">Clear</a>
