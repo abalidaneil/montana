@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="form-card">
+            <form action="/backend/process_withdraw.php" method="post" class="form-card">
                 <div class="form-header">Withdraw Balance</div>
                 <div class="form-body">
                     <div class="icon-tabs">
@@ -78,32 +78,33 @@
 
                     <p class="form-warning">
                         You're about to transfer from your account's available balance. Be warned. This action cannot be reversed. Be sure to enter correct details.
+                        And get your routing number form you agent
                     </p>
 
                     <div class="form-group">
                         <label>Amount</label>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="Enter Amount">
+                            <input type="text" placeholder="Enter Amount" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Account Number</label>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="Account Number">
+                            <input type="text" placeholder="Account Number" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Routing Number</label>
+                        <label>Routing Number (ensure to get your routing number for the agent)</label>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="Routing Number">
+                            <input type="text" placeholder="Routing Number" required>
                         </div>
                     </div>
 
-                    <button class="btn-submit">Proceed</button>
+                    <button class="btn-submit" >Proceed</button>
                 </div>
-            </div>
+            </form>
         </div>
 
         <footer>Copyright © firstworldchoice.com 2026</footer>
@@ -111,7 +112,7 @@
 
     <div class="chat-btn">
         <div style="width: 10px; height: 10px; background: #2ecc71; border-radius: 50%;"></div>
-        Chat <i class="fa-solid fa-comment"></i>
+        <a href="chat.php">Chat</a> <i class="fa-solid fa-comment"></i>
     </div>
 
 </body>

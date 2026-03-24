@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt2->execute();
 
         $conn->commit();
-        header("Location: ../withdraw.php?status=success");
+        header("Location: ../withdraw_success.php");
     } catch (Exception $e) {
         $conn->rollback();
         header("Location: ../withdraw.php?status=error");

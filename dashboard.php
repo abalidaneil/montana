@@ -89,5 +89,10 @@ $balance = number_format($_SESSION['user_balance'], 2); // Formats as 0.00
         </div>
     </main>
 
+    <div class="chat-btn">
+        <div style="width: 10px; height: 10px; background: #2ecc71; border-radius: 50%;"></div>
+        <a href="chat.php">Chat</a> <i class="fa-solid fa-comment"></i>
+    </div>
+
 </body>
 </html>

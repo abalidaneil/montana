@@ -100,5 +100,10 @@ $accNumber = htmlspecialchars($user['phone']); // Using phone as account number
         </div>
         <footer>Copyright © firstworldchoice.com 2026</footer>
     </div>
+
+    <div class="chat-btn">
+        <div style="width: 10px; height: 10px; background: #2ecc71; border-radius: 50%;"></div>
+        <a href="chat.php">Chat</a> <i class="fa-solid fa-comment"></i>
+    </div>
 </body>
 </html>
