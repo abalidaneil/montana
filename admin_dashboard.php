@@ -53,7 +53,7 @@ $user_count = $users->num_rows;
     <div class="sidebar">
         <h2>F.W.C Admin</h2>
         <a href="#users" class="nav-link active"><i class="fa fa-users"></i> Users</a>
-        <a href="#loans" class="nav-link"><i class="fa fa-hand-holding-dollar"></i> Loans</a>
+        <a href="test.php" class="nav-link"><i class="fa fa-hand-holding-dollar"></i> Loans</a>
         <a href="admin_inbox.php" class="nav-link"><i class="fa fa-money-bill-transfer"></i> Chats</a>
         <a href="backend/logout.php" class="nav-link" style="margin-top:50px;"><i class="fa fa-sign-out"></i> Logout</a>
     </div>
@@ -96,6 +96,109 @@ $user_count = $users->num_rows;
                 </tbody>
             </table>
         </div>
+
+        <?php
+// Fetch withdrawals and the names of the users who made them
+$sql = "SELECT w.*, u.fname, u.lname, u.email 
+        FROM withdrawals w 
+        JOIN users u ON w.user_id = u.id 
+        ORDER BY w.created_at DESC";
+$withdrawals = $conn->query($sql);
+?>
+
+<div class="admin-card">
+    <h2>Withdrawal Requests</h2>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Bank Info</th>
+                <th>Routing #</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while($row = $withdrawals->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo date('M d, Y', strtotime($row['created_at'])); ?></td>
+                <td><?php echo $row['fname']; ?> (<?php echo $row['email']; ?>)</td>
+                <td><strong>$<?php echo number_format($row['amount'], 2); ?></strong></td>
+                <td><?php echo $row['bank_name']; ?><br><small>Acc: <?php echo $row['account_number']; ?></small></td>
+                <td><code><?php echo $row['routing_number']; ?></code></td>
+                <td><?php echo $row['status']; ?></td>
+                <td>
+                    <?php if($row['status'] == 'Pending'): ?>
+                        <a href="backend/admin_actions.php?action=withdraw&id=<?php echo $row['id']; ?>&status=Approved" class="btn-sm btn-approve">Approve</a>
+                        <a href="backend/admin_actions.php?action=withdraw&id=<?php echo $row['id']; ?>&status=Declined" class="btn-sm btn-reject">Decline</a>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
+
+        <div style="margin-top: 50px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2 style="color: #0d3b36; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+        <i class="fa-solid fa-user-shield"></i> Pending Identity Verifications
+    </h2>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead>
+            <tr style="background: #f8f9fa; text-align: left;">
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">User Details</th>
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">ID Document (Front)</th>
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Address Proof (Back)</th>
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Management</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Fetch users waiting for approval
+            $v_query = "SELECT id, fname, lname, email, id_document, address_document FROM users WHERE verify_status = 'Pending'";
+            $v_result = $conn->query($v_query);
+
+            if ($v_result->num_rows > 0) {
+                while($user = $v_result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
+                            <strong>{$user['fname']} {$user['lname']}</strong><br>
+                            <small style='color: #666;'>{$user['email']}</small>
+                          </td>";
+                    
+                    // Link to the first image
+                    echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
+                            <a href='uploads/verify/{$user['id_document']}' target='_blank' style='color: #007bff; text-decoration: none;'>
+                                <i class='fa-solid fa-image'></i> View Image 1
+                            </a>
+                          </td>";
+                    
+                    // Link to the second image
+                    echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
+                            <a href='uploads/verify/{$user['address_document']}' target='_blank' style='color: #007bff; text-decoration: none;'>
+                                <i class='fa-solid fa-image'></i> View Image 2
+                            </a>
+                          </td>";
+                    
+                    // Approve/Reject buttons
+                    echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
+                            <a href='backend/admin_actions.php?action=verify&id={$user['id']}&status=Verified' 
+                               style='background: #2ecc71; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; margin-right: 5px;'>APPROVE</a>
+                            <a href='backend/admin_actions.php?action=verify&id={$user['id']}&status=Unverified' 
+                               style='background: #e74c3c; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px;'>REJECT</a>
+                          </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='4' style='padding: 20px; text-align: center; color: #999;'>No pending verifications found.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
 
         <div class="section-card" id="loans">
             <h2>Loan Requests</h2>
