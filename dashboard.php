@@ -12,6 +12,13 @@ $firstName = $_SESSION['user_fname'];
 $lastName = $_SESSION['user_lname'];
 $balance = number_format($_SESSION['user_balance'], 2); // Formats as 0.00
 ?>
+
+<?php
+// Ensure session is started and DB connection exists
+$userId = $_SESSION['user_id'];
+$query = $conn->query("SELECT verify_status FROM users WHERE id = $userId");
+$userData = $query->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,9 +48,13 @@ $balance = number_format($_SESSION['user_balance'], 2); // Formats as 0.00
             <div style="font-size: 0.9rem;"><a href="profile.html" style="color: black;"> Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong> </a></div>
         </header>
 
-        <div class="alert-bar">
-            Your account is not yet <a href="info.html"> verified </a>. Click here to continue
-        </div>
+        <?php if ($userData['verify_status'] === 'Unverified'): ?>
+            <div class="verification-alert" style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #ffeeba;">
+                <i class="fa-solid fa-circle-exclamation"></i> 
+                Your account is not yet <strong>verified</strong>. 
+                <a href="verify.php" style="color: #856404; font-weight: bold; text-decoration: underline;">Click here to continue</a>
+            </div>
+        <?php endif; ?>
 
         <div class="main-card">
             <div class="btn-plus">+</div>

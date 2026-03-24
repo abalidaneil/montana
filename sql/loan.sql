@@ -16,19 +16,6 @@ CREATE TABLE loans (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE withdrawals (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
-    account_number VARCHAR(50),
-    routing_number VARCHAR(50),
-    status VARCHAR(20) DEFAULT 'Pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-
-
 -- 2. Create the table with the correct columns
 CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,5 +45,16 @@ CREATE TABLE images (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-
 ALTER TABLE users ADD COLUMN login_code INT(4);
+
+CREATE TABLE withdrawals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    bank_name VARCHAR(100) NOT NULL,
+    account_number VARCHAR(50) NOT NULL,
+    routing_number VARCHAR(50) NOT NULL,
+    status ENUM('Pending', 'Approved', 'Declined') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

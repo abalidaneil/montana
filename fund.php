@@ -68,9 +68,21 @@ $accNumber = htmlspecialchars($user['phone']); // Using phone as account number
 
         <div class="content-body">
             <h1>Fund Account</h1>
-            <div class="alert-box">Your account is not yet verified. <a href="#">Click here</a> to continue</div>
+           <?php
+                // Ensure session is started and DB connection exists
+                $userId = $_SESSION['user_id'];
+                $query = $conn->query("SELECT verify_status FROM users WHERE id = $userId");
+                $userData = $query->fetch_assoc();
+                ?>
+            <?php if ($userData['verify_status'] === 'Unverified'): ?>
+            <div class="verification-alert" style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #ffeeba;">
+                <i class="fa-solid fa-circle-exclamation"></i> 
+                Your account is not yet <strong>verified</strong>. 
+                <a href="verify.php" style="color: #856404; font-weight: bold; text-decoration: underline;">Click here to continue</a>
+            </div>
+            <?php endif; ?>
             <div class="card">
-                <div class="balance-info">
+                <div class="balan ce-info">
                     <i class="fa-solid fa-wallet wallet-icon"></i>
                     <div class="balance-details">
                         <h3>Main Balance</h3>
