@@ -8,12 +8,8 @@ session_start();
 
 // STEP 2: DATABASE CONNECTION
 // Double-check these 4 values match your XAMPP/WAMP settings
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "montana";
-
-$conn = new mysqli($host, $user, $pass, $db);
+$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
+$conn = new mysqli($host, $user, $pass, $dbname);
 
 // If the database is the problem, this will tell us
 if ($conn->connect_error) {
@@ -65,16 +61,58 @@ $userData = ($query) ? $query->fetch_assoc() : ['verify_status' => 'Unverified']
             <div>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></div>
         </header>
 
-        <?php if ($userData['verify_status'] === 'Unverified'): ?>
+        
             <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #ffeeba;">
                 Your account is not yet verified. <a href="info.html">Click here to continue</a>
             </div>
-        <?php endif; ?>
+
 
         <div class="main-card">
             <p>Welcome <span style="color: red;"><?php echo htmlspecialchars($firstName . " " . $lastName); ?></span></p>
             <div style="font-size: 2rem; font-weight: bold;">$ <?php echo $balance; ?></div>
         </div>
+
+        <div class="payment-methords">
+                <div><div style="color: red;">↓</div><small>Bank</small></div>
+                <div><div style="color: blue;">G</div><small>GCash</small></div>
+                <div><div style="color: #0070ba;">P</div><small>PayPal</small></div>
+                <div><div style="color: #800080;">S</div><small>Skrill</small></div>
+            </div>
+        </div>
+
+        <div class="grid-stats">
+            <div class="stat-card"><small>Current Balance</small><div>$ <?php echo $balance; ?></div></div>
+            <div class="stat-card"><small>Ledger Balance</small><div>$ <?php echo $balance; ?></div></div>
+            <div class="stat-card"><small>Available Balance</small><div>$ <?php echo $balance; ?></div></div>
+            <div class="stat-card"><small>Refundable Balance</small><div>$ 0.00</div></div>
+        </div>
+
+        <div class="overview-grid">
+            <div class="color-card" style="background: #a855f7;">
+                <div class="circle-progress">0%</div>
+                <span>Withdrawals</span>
+            </div>
+            <div class="color-card" style="background: #22c55e;">
+                <div class="circle-progress">0%</div>
+                <span>Transfers</span>
+            </div>
+        </div>
+
+        <div class="overview-grid">
+            <div class="color-card" style="background: #22c55e;">
+                <div class="circle-progress">0%</div>
+                <span>Withdrawals</span>
+            </div>
+            <div class="color-card" style="background: #a855f7;">
+                <div class="circle-progress">0%</div>
+                <span>Transfers</span>
+            </div>
+        </div>
     </main>
+
+    <div class="chat-btn">
+        <div style="width: 10px; height: 10px; background: #2ecc71; border-radius: 50%;"></div>
+        <a href="chat.php">Chat</a> <i class="fa-solid fa-comment"></i>
+    </div>
 </body>
 </html>

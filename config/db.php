@@ -4,10 +4,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // session_start();
 
-$host = 'localhost';
-$dbname = 'montana';
-$username = 'root';
-$password = ''; // Store this securely, e.g., in environment variables
+$host = 'fdb1032.awardspace.net';
+$dbname = '4676457_montana';
+$username = '4676457_montana';
+$password = 'FdgO%Ct]4[kmV7T['; // Store this securely, e.g., in environment variables
 
 function getDatabaseConnection($host, $dbname, $username, $password) {
     try {

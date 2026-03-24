@@ -1,7 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['admin_id'])) { header("Location: admin_login.html"); exit(); }
-$conn = new mysqli("localhost", "root", "", "montana");
+$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
+$conn = new mysqli($host, $user, $pass, $dbname);
 
 // Fetch unique users who have messaged
 $users = $conn->query("SELECT DISTINCT u.id, u.fname, u.lname FROM users u JOIN messages m ON u.id = m.user_id");

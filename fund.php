@@ -7,10 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Database Connection
-$host = "localhost";
-$user = "root";
-$pass = "";
-$dbname = "montana";
+$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
 $conn = new mysqli($host, $user, $pass, $dbname);
 
 // Fetch fresh data for the logged-in user

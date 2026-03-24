@@ -2,12 +2,7 @@
 session_start();
 
 // 1. Database Configuration
-$host = "localhost";
-$user = "root"; // Default phpMyAdmin user
-$pass = "";     // Default is empty; change if you set a password
-$dbname = "montana";
-
-// Create connection
+$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
 $conn = new mysqli($host, $user, $pass, $dbname);
 
 // Check connection

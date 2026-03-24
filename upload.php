@@ -1,11 +1,6 @@
 <?php
-$host = 'localhost';
-$dbname = 'montana';
-$username = 'root';
-$password = '';
-
-// Create connection
-$conn = new mysqli($host, $username, $password, $dbname);
+$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
+$conn = new mysqli($host, $user, $pass, $dbname);
 
 
 session_start();
