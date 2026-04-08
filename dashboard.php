@@ -8,8 +8,7 @@ session_start();
 
 // STEP 2: DATABASE CONNECTION
 // Double-check these 4 values match your XAMPP/WAMP settings
-$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
-$conn = new mysqli($host, $user, $pass, $dbname);
+require_once "sqli.php";
 
 // If the database is the problem, this will tell us
 if ($conn->connect_error) {
@@ -25,11 +24,15 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 $firstName = $_SESSION['user_fname'] ?? 'User';
 $lastName = $_SESSION['user_lname'] ?? '';
-$balance = number_format($_SESSION['user_balance'] ?? 0, 2);
 
-// STEP 4: FETCH VERIFY STATUS
-$query = $conn->query("SELECT verify_status FROM users WHERE id = $userId");
-$userData = ($query) ? $query->fetch_assoc() : ['verify_status' => 'Unverified'];
+// 1. We ask the database for BOTH the verify_status AND the live balance
+$query = $conn->query("SELECT verify_status, balance FROM users WHERE id = $userId");
+
+// 2. We store it safely
+$userData = ($query) ? $query->fetch_assoc() : ['verify_status' => 'Unverified', 'balance' => 0];
+
+// 3. We format the LIVE database balance, completely ignoring the stale session
+$balance = number_format($userData['balance'], 2);
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +53,7 @@ $userData = ($query) ? $query->fetch_assoc() : ['verify_status' => 'Unverified']
         <a href="dashboard.php" class="nav-item"><i class="fa-solid fa-layer-group"></i> Dashboard</a>
         <a href="loan.php" class="nav-item"><i class="fa-solid fa-laptop-code"></i> Loans</a>
         <a href="fund.php" class="nav-item"><i class="fa-solid fa-sliders"></i> Fund Account</a>
-        <a href="withdraw.html" class="nav-item"><i class="fa-solid fa-money-bill-transfer"></i> Withdrawal</a>
+        <a href="withdraw.php" class="nav-item"><i class="fa-solid fa-money-bill-transfer"></i> Withdrawal</a>
         <a href="trans.html" class="nav-item"><i class="fa-solid fa-earth-americas"></i> Transfer</a>
         <a href="backend/logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>

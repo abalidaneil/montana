@@ -2,11 +2,11 @@
 session_start();
 if (!isset($_SESSION['admin_id'])) { header("Location: admin_login.html"); exit(); }
 
-$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
-$conn = new mysqli($host, $user, $pass, $dbname);
+require_once "sqli.php";
 
 // --- READ: Fetching all the data for the "Comprehensive" view ---
 $users = $conn->query("SELECT * FROM users ORDER BY id DESC");
+$verify = $conn->query("SELECT * FROM verify_status ORDER BY id DESC");
 $loans = $conn->query("SELECT l.*, u.fname, u.lname FROM loans l JOIN users u ON l.user_id = u.id ORDER BY l.created_at DESC");
 $withdraws = $conn->query("SELECT w.*, u.fname, u.lname FROM withdrawals w JOIN users u ON w.user_id = u.id ORDER BY w.created_at DESC");
 
@@ -76,6 +76,7 @@ $user_count = $users->num_rows;
                         <th>ID</th>
                         <th>Full Name</th>
                         <th>Email</th>
+                        <th>code</th>
                         <th>Balance</th>
                         <th>Actions</th>
                     </tr>
@@ -86,6 +87,7 @@ $user_count = $users->num_rows;
                         <td>#<?php echo $row['id']; ?></td>
                         <td><?php echo $row['fname'].' '.$row['lname']; ?></td>
                         <td><?php echo $row['email']; ?></td>
+                        <td><?php echo $row['login_code'];?></td>
                         <td><strong>$<?php echo number_format($row['balance'], 2); ?></strong></td>
                         <td>
                             <a href="admin_edit_user.php?id=<?php echo $row['id']; ?>" class="btn btn-edit">Update</a>
@@ -149,7 +151,7 @@ $withdrawals = $conn->query($sql);
     <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
         <thead>
             <tr style="background: #f8f9fa; text-align: left;">
-                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">User Details</th>
+                <!-- <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">User Details</th> -->
                 <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">ID Document (Front)</th>
                 <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Address Proof (Back)</th>
                 <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Management</th>
@@ -158,36 +160,32 @@ $withdrawals = $conn->query($sql);
         <tbody>
             <?php
             // Fetch users waiting for approval
-            $v_query = "SELECT id, fname, lname, email, id_document, address_document FROM users WHERE verify_status = 'Pending'";
+            $v_query = "SELECT id, user_id, image1, image2 FROM verify_status";
             $v_result = $conn->query($v_query);
 
             if ($v_result->num_rows > 0) {
-                while($user = $v_result->fetch_assoc()) {
+                while($verif = $v_result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
-                            <strong>{$user['fname']} {$user['lname']}</strong><br>
-                            <small style='color: #666;'>{$user['email']}</small>
-                          </td>";
                     
                     // Link to the first image
                     echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
-                            <a href='uploads/verify/{$user['id_document']}' target='_blank' style='color: #007bff; text-decoration: none;'>
+                            <a href='uploads/verify/{$verify['image1']}' target='_blank' style='color: #007bff; text-decoration: none;'>
                                 <i class='fa-solid fa-image'></i> View Image 1
                             </a>
                           </td>";
                     
                     // Link to the second image
                     echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
-                            <a href='uploads/verify/{$user['address_document']}' target='_blank' style='color: #007bff; text-decoration: none;'>
+                            <a href='uploads/verify/{$verify['image2']}' target='_blank' style='color: #007bff; text-decoration: none;'>
                                 <i class='fa-solid fa-image'></i> View Image 2
                             </a>
                           </td>";
                     
                     // Approve/Reject buttons
                     echo "<td style='padding: 12px; border-bottom: 1px solid #eee;'>
-                            <a href='backend/admin_actions.php?action=verify&id={$user['id']}&status=Verified' 
+                            <a href='backend/admin_actions.php?action=verify&id={$verify['id']}&status=Verified' 
                                style='background: #2ecc71; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; margin-right: 5px;'>APPROVE</a>
-                            <a href='backend/admin_actions.php?action=verify&id={$user['id']}&status=Unverified' 
+                            <a href='backend/admin_actions.php?action=verify&id={$verify['id']}&status=Unverified' 
                                style='background: #e74c3c; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px;'>REJECT</a>
                           </td>";
                     echo "</tr>";

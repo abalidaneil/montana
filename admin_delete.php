@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['admin_id'])) exit();
 
-$conn = new mysqli("fdb1032.awardspace.net", "4676457_montana", "FdgO%Ct]4[kmV7T[", "4676457_montana");
+require_once "sqli.php";
 
 $type = $_GET['type'];
 $id = (int)$_GET['id'];

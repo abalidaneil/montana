@@ -4,10 +4,15 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // session_start();
 
-$host = 'fdb1032.awardspace.net';
-$dbname = '4676457_montana';
-$username = '4676457_montana';
-$password = 'FdgO%Ct]4[kmV7T['; // Store this securely, e.g., in environment variables
+// $host = 'fdb1032.awardspace.net';
+// $dbname = '4676457_montana';
+// $username = '4676457_montana';
+// $password = 'FdgO%Ct]4[kmV7T[';
+
+$host = 'localhost';
+$dbname = 'montana';
+$username = 'root';
+$password = '';
 
 function getDatabaseConnection($host, $dbname, $username, $password) {
     try {
@@ -19,9 +24,7 @@ function getDatabaseConnection($host, $dbname, $username, $password) {
     }
 }
 
-// Establish the connection
 $pdo = getDatabaseConnection($host, $dbname, $username, $password);
-echo("connection successfull")
 
 // Optionally, you can close the connection
 // $pdo = null;

@@ -1,7 +1,6 @@
 <?php
 session_start();
-$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
-$conn = new mysqli($host, $user, $pass, $dbname);
+require_once "sqli.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_input = $_POST['username'];

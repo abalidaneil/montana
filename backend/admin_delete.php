@@ -2,8 +2,7 @@
 session_start();
 if (!isset($_SESSION['admin_id'])) { exit("Unauthorized"); }
 
-$host = "fdb1032.awardspace.net"; $user = "4676457_montana"; $pass = "FdgO%Ct]4[kmV7T["; $dbname = "4676457_montana";
-$conn = new mysqli($host, $user, $pass, $dbname);
+require_once "sqli.php";
 $id = $_GET['id'];
 
 if (isset($id)) {

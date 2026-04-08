@@ -1,3 +1,49 @@
+<?php
+// Display errors for debugging just in case
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+// Security Check: Redirect if not logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html");
+    exit();
+}
+
+// Database Connection
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db   = "montana";
+
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die("Database Connection Failed: " . $conn->connect_error);
+}
+
+$userId = $_SESSION['user_id'];
+
+// Fetch the current user's data
+$query = $conn->query("SELECT fname, lname, balance, account_number, verify_status FROM users WHERE id = $userId");
+
+if ($query && $query->num_rows > 0) {
+    $userData = $query->fetch_assoc();
+    $firstName = $userData['fname'];
+    $lastName = $userData['lname'];
+    $balance = number_format($userData['balance'] ?? 0, 2);
+    // If they don't have an account number yet, show a placeholder
+    $accountNumber = !empty($userData['account_number']) ? $userData['account_number'] : '0000000000';
+    $verifyStatus = $userData['verify_status'];
+} else {
+    // Fallback data if something goes wrong
+    $firstName = "User";
+    $lastName = "";
+    $balance = "0.00";
+    $accountNumber = "0000000000";
+    $verifyStatus = "Unverified";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +63,7 @@
         <a href="dashboard.php" class="nav-item"><i class="fa-solid fa-layer-group"></i> Dashboard <i class="fa-solid fa-chevron-right arrow"></i></a>
         <a href="loan.php" class="nav-item"><i class="fa-solid fa-laptop-code"></i> Loans <i class="fa-solid fa-chevron-right arrow"></i></a>
         <a href="fund.php" class="nav-item"><i class="fa-solid fa-sliders"></i> Fund Account <i class="fa-solid fa-chevron-right arrow"></i></a>
-        <a href="withdraw.html" class="nav-item"><i class="fa-solid fa-sliders"></i> Withdrawal <i class="fa-solid fa-chevron-down arrow"></i></a>
+        <a href="withdraw.php" class="nav-item"><i class="fa-solid fa-sliders"></i> Withdrawal <i class="fa-solid fa-chevron-down arrow"></i></a>
         <a href="trans.html" class="nav-item"><i class="fa-solid fa-earth-americas"></i> Transfer <i class="fa-solid fa-chevron-right arrow"></i></a>
         <a href="backend/logout.php" class="nav-item"><i class="fa-solid fa-table-cells-large"></i> Logout <i class="fa-solid fa-chevron-right arrow"></i></a>
     </div>
@@ -32,7 +78,7 @@
                 </div>
             </div>
             <div class="user-profile">
-                <span>Hello, <strong>abali</strong></span>
+                <span>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></span>
                 <img src="https://via.placeholder.com/35" alt="Profile">
             </div>
         </header>
@@ -41,12 +87,17 @@
             <h1>Withdrawal</h1>
 
             <div class="alert-box">
-                <!-- Your account is not yet verified. <a href="#" style="color: inherit; font-weight: 600;">Click here</a> to continue -->
+                <?php if ($verifyStatus === 'Unverified'): ?>
+                    <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #ffeeba;">
+                        <i class="fa-solid fa-circle-exclamation"></i> 
+                        Your account is not yet verified. <a href="info.html" style="color: inherit; font-weight: 600; text-decoration: underline;">Click here</a> to continue.
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="card-visual">
                 <div class="card-label">Main Balance</div>
-                <div class="card-balance">$ 0.00</div>
+                <div class="card-balance">$ <?php echo $balance; ?></div>
                 
                 <div class="mastercard-logo">
                     <div class="circle red"></div>
@@ -61,14 +112,13 @@
                         </div>
                         <div>
                             <div class="card-meta-label">Card Holder</div>
-                            <div class="card-meta-value">abali daniel</div>
+                            <div class="card-meta-value"><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></div>
                         </div>
                     </div>
-                    <div class="card-acc-num">9873517932</div>
+                    <div class="card-acc-num"><?php echo htmlspecialchars($accountNumber); ?></div>
                 </div>
             </div>
 
-            
             <form action="backend/process_withdraw.php" method="POST" class="from-card">
                 <div class="form-header">Withdraw Balance</div>
                 <div class="form-body">
@@ -85,25 +135,25 @@
                     <div class="form-group">
                         <label>Amount</label>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="Enter Amount" required>
+                            <input type="text" name="amount" placeholder="Enter Amount" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Account Number</label>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="Account Number" required>
+                            <input type="text" name="account_number" placeholder="Account Number" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Routing Number (ensure to get your routing number for the agent)</label>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="Routing Number" required>
+                            <input type="text" name="routing_number" placeholder="Routing Number" required>
                         </div>
                     </div>
 
-                    <button class="btn-submit">Proceed</button>
+                    <button type="submit" class="btn-submit" onclick="return confirm('Make sure you collect your routing number for you agent')">Proceed</button>
                 </div>
             </form>
         </div>
