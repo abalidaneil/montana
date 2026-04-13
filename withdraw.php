@@ -53,9 +53,10 @@ if ($query && $query->num_rows > 0) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
+    <script src="sidebar.js"></script>
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="logo-container">
             <i class="fa-solid fa-building-columns logo-icon"></i>
             <span style="font-weight: 700; font-size: 20px;">FirstWorld</span>
@@ -68,23 +69,22 @@ if ($query && $query->num_rows > 0) {
         <a href="backend/logout.php" class="nav-item"><i class="fa-solid fa-table-cells-large"></i> Logout <i class="fa-solid fa-chevron-right arrow"></i></a>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" id="main">
         <header>
             <div style="display: flex; align-items: center; gap: 20px;">
-                <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;"></i>
-                <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass" style="color: #aaa;"></i>
-                    <input type="text" placeholder="Search here...">
+                <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;" onclick="funny()"></i>
+                <div class="search-bar-top">
+                    <h1>Withdrawal</h1>
                 </div>
             </div>
             <div class="user-profile">
-                <span>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></span>
+                <div>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></div>
                 <img src="https://via.placeholder.com/35" alt="Profile">
             </div>
         </header>
 
         <div class="content-body">
-            <h1>Withdrawal</h1>
+            <h1></h1>
 
             <div class="alert-box">
                 <?php if ($verifyStatus === 'Unverified'): ?>

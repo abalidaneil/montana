@@ -25,7 +25,7 @@ $user_count = $users->num_rows;
         body { margin: 0; display: flex; font-family: 'Inter', sans-serif; background: var(--main-bg); }
         
         /* Sidebar Navigation */
-        .sidebar { width: 260px; height: 100vh; background: var(--sidebar-bg); color: white; position: fixed; padding: 20px; }
+        .sidebar { width: 260px; height: 100vh; background: var(--sidebar-bg); color: white; position: fixed; padding: 20px; display: unset; }
         .sidebar h2 { color: var(--accent); margin-bottom: 40px; }
         .nav-link { display: block; padding: 15px; color: #a0b1ad; text-decoration: none; border-radius: 8px; margin-bottom: 5px; }
         .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
@@ -50,15 +50,17 @@ $user_count = $users->num_rows;
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <h2>F.W.C Admin</h2>
         <a href="#users" class="nav-link active"><i class="fa fa-users"></i> Users</a>
         <a href="test.php" class="nav-link"><i class="fa fa-hand-holding-dollar"></i> Loans</a>
         <a href="admin_inbox.php" class="nav-link"><i class="fa fa-money-bill-transfer"></i> Chats</a>
         <a href="backend/logout.php" class="nav-link" style="margin-top:50px;"><i class="fa fa-sign-out"></i> Logout</a>
     </div>
-
-    <div class="content">
+    
+    <div class="content" id="main">
+        <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;" onclick="funny()"></i>
+        <button onclick="funny()">click me</button>
         <div class="stats-row">
             <div class="stat-card"><h3>Total Users</h3><p><?php echo $user_count; ?></p></div>
             <div class="stat-card"><h3>Global Balance</h3><p>$<?php echo number_format($total_on_site, 2); ?></p></div>
@@ -230,5 +232,21 @@ $withdrawals = $conn->query($sql);
         </div>
     </div>
 
+    <script src="sidebar">
+        i = true
+        function funny(){
+            if (i == true){
+                document.getElementById("sidebar").style= "display:none;";
+                document.getElementById("main").style = "margin-left:0;";
+                i = false
+                console.log(i)
+            } else if (i == false){
+                document.getElementById("sidebar").style= "display:flex;";
+                document.getElementById("main").style = "margin-left:300px;";
+                i = true
+                console.log(i)
+            }
+        }
+    </script>
 </body>
 </html>

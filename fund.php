@@ -34,10 +34,11 @@ $accNumber = htmlspecialchars($user['phone']); // Using phone as account number
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/fund.css">
-     <!-- <link rel="stylesheet" href="styles/main.css"> -->
+    <script src="sidebar.js"></script>
+     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="logo-container">
             <i class="fa-solid fa-building-columns logo-icon"></i>
             <span style="font-weight: 700; font-size: 20px;">FirstWorld</span>
@@ -50,33 +51,24 @@ $accNumber = htmlspecialchars($user['phone']); // Using phone as account number
         <a href="backend/logout.php" class="nav-item"><i class="fa-solid fa-table-cells-large"></i> Logout <i class="fa-solid fa-chevron-right arrow"></i></a>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" id="main">
         <header>
-            <div class="search-container">
-                <i class="fa-solid fa-magnifying-glass" style="color: #aaa;"></i>
-                <input type="text" placeholder="Search here...">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;" onclick="funny()"></i>
+                <div class="search-bar-top">
+                    <h1>Fund Account</h1>
+                </div>
             </div>
             <div class="user-profile">
-                <span>Hello, <strong><?php echo $firstName; ?></strong></span>
+                <div>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></div>
                 <img src="https://via.placeholder.com/35" alt="Profile">
             </div>
         </header>
+        
 
         <div class="content-body">
-            <h1>Fund Account</h1>
-           <?php
-                // Ensure session is started and DB connection exists
-                $userId = $_SESSION['user_id'];
-                $query = $conn->query("SELECT verify_status FROM users WHERE id = $userId");
-                $userData = $query->fetch_assoc();
-                ?>
-            <?php if ($userData['verify_status'] === 'Unverified'): ?>
-            <div class="verification-alert" style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #ffeeba;">
-                <i class="fa-solid fa-circle-exclamation"></i> 
-                Your account is not yet <strong>verified</strong>. 
-                <a href="verify.php" style="color: #856404; font-weight: bold; text-decoration: underline;">Click here to continue</a>
-            </div>
-            <?php endif; ?>
+            
+           
             <div class="card">
                 <div class="balan ce-info">
                     <i class="fa-solid fa-wallet wallet-icon"></i>

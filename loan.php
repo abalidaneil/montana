@@ -17,12 +17,13 @@ $history = $stmtH->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Firstworldchoice - Loans</title>
+    <script src="sidebar.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/loan.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="logo-container">
             <i class="fa-solid fa-building-columns logo-icon"></i>
             <span style="font-weight: 700; font-size: 20px;">FirstWorld</span>
@@ -35,8 +36,20 @@ $history = $stmtH->get_result();
         <a href="backend/logout.php" class="nav-item"><i class="fa-solid fa-table-cells-large"></i> Logout <i class="fa-solid fa-chevron-right arrow"></i></a>
     </div>
 
-    <div class="main">
-        <h1>Loan Management</h1>
+    <div class="main" id="main">
+
+        <header>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;" onclick="funny()"></i>
+                <div class="search-bar-top">
+                    <h1>Loan</h1>
+                </div>
+            </div>
+            <div class="user-profile">
+                <div>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></div>
+                <img src="https://via.placeholder.com/35" alt="Profile">
+            </div>
+        </header>
 
         <div class="loan-form">
             <h3>Request a New Loan</h3>

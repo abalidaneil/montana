@@ -45,7 +45,7 @@ $balance = number_format($userData['balance'], 2);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="logo-container">
             <i class="fa-solid fa-building-columns logo-icon"></i>
             <span style="font-weight: 700; font-size: 20px;">FirstWorld</span>
@@ -58,10 +58,18 @@ $balance = number_format($userData['balance'], 2);
         <a href="backend/logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
 
-    <main>
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h2>Dashboard</h2>
-            <div>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></div>
+    <main class="main-content" id="main">
+        <header>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;" onclick="funny()"></i>
+                <div class="search-bar-top">
+                    <h1>Dashboard</h1>
+                </div>
+            </div>
+            <div class="user-profile">
+                <div>Hello, <strong><?php echo htmlspecialchars($firstName); ?></strong></div>
+                <img src="https://via.placeholder.com/35" alt="Profile">
+            </div>
         </header>
 
         
@@ -117,5 +125,19 @@ $balance = number_format($userData['balance'], 2);
         <div style="width: 10px; height: 10px; background: #2ecc71; border-radius: 50%;"></div>
         <a href="chat.php">Chat</a> <i class="fa-solid fa-comment"></i>
     </div>
+    <script>
+        i = true
+        function funny(){
+            if (i == true){
+                document.getElementById("sidebar").style= "display:none;";
+                document.getElementById("main").style = "margin-left:0;";
+                i = false
+            } else if (i == false){
+                document.getElementById("sidebar").style= "display:flex;";
+                document.getElementById("main").style = "margin-left:260px;";
+                i = true
+            }
+        }
+    </script>
 </body>
 </html>
